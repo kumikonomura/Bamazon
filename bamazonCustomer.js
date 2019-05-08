@@ -9,42 +9,45 @@ const db = createConnection({
 
 const inquirer = require('inquirer')
 
+// Running this app will first display all the items available for sale
+// Will include ids, names, and prices of products for sale
 db.connect(e => {
     if(e) {console.log(e)}
     db.query('SELECT * FROM products', (e, data)=> {
         if(e) {console.log(e)}
-        console.log(data)
+        for (i = 0; i < 10; i++)
+        // console.log(data[i].item_id)
+        console.log(`
+            ID: ${data[i].item_id}
+            Product Name: ${data[i].product_name}
+            Department Name: ${data[i].department_name}
+            Price: ${data[i].price}
+            Stock Quantity: ${data[i].stock_quantity}
+        `)
     })
 })
-// Running this app will first display all of the items available for sale.
-// Include ids, names and prices of products for sale
-function displayItems() {
-    db.query('SELECT * FROM products', (e, data)=> {
-        if(e) throw e
-        console.log(data)
-    })
-}
 // The app should then prompt users with two messages
-function startStore() {
+function placeOrder() {
     // First, should ask them the ID of the product they would like to buy
     inquirer.prompt([
         {
             type: 'input',
-            name: 'first message',
+            name: 'productID',
             message: 'Which product ID which you like to buy?'
         },
-        // Second, should ask how many units of the procut they would like to buy
+        // Second, should ask how many units of the product they would like to buy
         {
             type: 'input',
-            name: 'second message',
-            message: 'How many units of the product do you want to purchase?'
+            name: 'Units',
+            message: 'How many units of the product would you like to buy?'
 
         }
     ])
     .then(userInput => {
         console.log(userInput)
     })
-} // 
+}
+
 // Once customer has placed the order, your app should check if your store has enough of the product
 // to meet the customer's request
 
