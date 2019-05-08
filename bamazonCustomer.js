@@ -38,7 +38,7 @@ function placeOrder() {
         // Second, should ask how many units of the product they would like to buy
         {
             type: 'input',
-            name: 'Units',
+            name: 'units',
             message: 'How many units of the product would you like to buy?'
 
         }
@@ -46,10 +46,17 @@ function placeOrder() {
     .then(userInput => {
         console.log(userInput)
     })
-}
+} 
+
 
 // Once customer has placed the order, your app should check if your store has enough of the product
 // to meet the customer's request
+function checkInventory() {
+    db.connect(e => {
+        if(e) console.log(e)
+        db.query('SELECT * FROM PRODUCTS')
+    })
+}
 
 // If not, the app should log a phrase like Insufficient quantity! and then prevent the order from going through
 
