@@ -11,12 +11,12 @@ const inquirer = require('inquirer')
 
 // Running this app will first display all the items available for sale
 // Will include ids, names, and prices of products for sale
-db.connect(e => {
-    if(e) {console.log(e)}
+let displayItems = _ => {
+// db.connect(e => {
+//     if(e) {console.log(e)}
     db.query('SELECT * FROM products', (e, data)=> {
         if(e) {console.log(e)}
         for (i = 0; i < 10; i++)
-        // console.log(data[i].item_id)
         console.log(`
             ID: ${data[i].item_id}
             Product Name: ${data[i].product_name}
@@ -24,8 +24,9 @@ db.connect(e => {
             Price: ${data[i].price}
             Stock Quantity: ${data[i].stock_quantity}
         `)
+        placeOrder()
     })
-})
+}
 // The app should then prompt users with two messages
 function placeOrder() {
     // First, should ask them the ID of the product they would like to buy
@@ -49,12 +50,15 @@ function placeOrder() {
 } 
 
 
-// Once customer has placed the order, your app should check if your store has enough of the product
-// to meet the customer's request
-function checkInventory() {
+// Once customer has placed the order, your app should check if your store has enough of the product to meet the customer's request
+// Check against product ID
+let checkInventory = _ => {
     db.connect(e => {
         if(e) console.log(e)
-        db.query('SELECT * FROM PRODUCTS')
+        db.query('SELECT * FROM PRODUCTS WHERE item_id', (e, data)=> {
+            if(e) console.log(e)
+            console.log(data)
+        })
     })
 }
 
