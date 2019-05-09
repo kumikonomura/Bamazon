@@ -27,6 +27,7 @@ let displayItems = _ => {
         placeOrder()
     })
 }
+displayItems()
 // The app should then prompt users with two messages
 function placeOrder() {
     // First, should ask them the ID of the product they would like to buy
@@ -44,8 +45,12 @@ function placeOrder() {
 
         }
     ])
-    .then(userInput => {
-        console.log(userInput)
+    // response of the user to the above two messages
+    .then(({productID, units}) => {
+        console.log(`
+            Product ID: ${productID}
+            Units: ${units}
+        `)
     })
 } 
 
