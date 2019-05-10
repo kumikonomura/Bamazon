@@ -28,6 +28,7 @@ let displayItems = _ => {
     })
 }
 displayItems()
+
 // The app should then prompt users with two messages
 function placeOrder() {
     // First, should ask them the ID of the product they would like to buy
@@ -40,35 +41,41 @@ function placeOrder() {
         // Second, should ask how many units of the product they would like to buy
         {
             type: 'input',
-            name: 'units',
+            name: 'quantity',
             message: 'How many units of the product would you like to buy?'
 
         }
     ])
     // response of the user to the above two messages
-    .then(({productID, units}) => {
-        console.log(`
-            Product ID: ${productID}
-            Units: ${units}
-        `)
-    })
-} 
-
-
-// Once customer has placed the order, your app should check if your store has enough of the product to meet the customer's request
-// Check against product ID
-let checkInventory = _ => {
-    db.connect(e => {
-        if(e) console.log(e)
-        db.query('SELECT * FROM PRODUCTS WHERE item_id', (e, data)=> {
-            if(e) console.log(e)
-            console.log(data)
-        })
+    .then(({productID, quantity})=> {
+        console.log(productID)
+        console.log(quantity)
     })
 }
 
-// If not, the app should log a phrase like Insufficient quantity! and then prevent the order from going through
+// function to check stock
+// need to make productID = item_id
+// if enough stock then process order for customer
+// and update SQL database to relect the remaining quantity
+// once update goes through, show customer the total cost of their purchase
 
-// However, if your store does have enough of the product, you should fulfill the customer's order
-    // This means updating the SQL database to reflect the remaining quantity
-    // Once the update goes through, show the customer the total cost of their purchase
+// if not enough stock, log phrase 'Insufficient quantity' and prevent
+// order from going through
+
+let checkStock = (productID, quantity) => {
+    db.query(`SELECT * FROM products WHERE item_id = ${productID}`, (e, 
+        [{product_name, price, stock_quantity}])=> {
+            if(e) throw e
+            if(stock_quantity => quantity) {
+                console.log(`
+                    Order Processed!!
+                    Quantity: ${quantity}
+                    Product Name: ${product_name}
+                    TOTAL COST: ${price * quantity}
+                
+                `)
+            }
+        })
+}
+
+
